@@ -24,11 +24,11 @@ SECRET_KEY = 'django-insecure-b9fa(-_4_v)ke)a*wu@ds^(uf08*!0iw4b^q5656dr4j!l20e*
 #SECRET_KEY = os.getenv('django-insecure-b9fa(-_4_v)ke)a*wu@ds^(uf08*!0iw4b^q5656dr4j!l20e*')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
-DEBUG = os.getenv('DEBUG') == '1'
+ DEBUG = True
+#DEBUG = os.getenv('DEBUG') == '1'
 
-# ALLOWED_HOSTS = []
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "127.0.0.1").split(",")
+ ALLOWED_HOSTS = []
+#ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "127.0.0.1").split(",")
 
 
 # Application definition
@@ -53,6 +53,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+        "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware", # newly added
+
+
 ]
 
 ROOT_URLCONF = 'nexgigproj.urls'
@@ -79,44 +84,44 @@ WSGI_APPLICATION = 'nexgigproj.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
+ DATABASES = {
+     'default': {
+         'ENGINE': 'django.db.backends.sqlite3',
+         'NAME': BASE_DIR / 'db.sqlite3',
+     }
+ }
 
-DB_NAME = os.getenv("DB_NAME")  # database name
-DB_PASSWORD = os.getenv("DB_PASSWORD")  # database user password
-DB_USER = os.getenv("DB_USER")  # database username
-DB_HOST = os.getenv("DB_HOST")  # database host
 
-MYSQL_READY = (
-    DB_NAME is not None
-    and DB_PASSWORD is not None
-    and DB_USER is not None
-    and DB_HOST is not None
-)
+#DATABASES = {
+#    "default": {
+#        "ENGINE": #"django.db.backends.sqlite3",
+#        "NAME": BASE_DIR / #"db.sqlite3",
+#    }
+#}
+#DB_NAME = os.getenv("DB_NAME")  # database name
+#DB_PASSWORD = os.getenv("DB_PASSWORD")  # database user password
+#DB_USER = os.getenv("DB_USER")  # database username
+#DB_HOST = os.getenv("DB_HOST")  # database host
 
-if MYSQL_READY:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.mysql",
-            "NAME": DB_NAME,
-            "USER": DB_USER,
-            "PASSWORD": DB_PASSWORD,
-            "HOST": DB_HOST,
-            "OPTIONS": {
-                "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
-            },
-        }
-    }
+#MYSQL_READY = (
+#    DB_NAME is not None
+ #   and DB_PASSWORD is not None
+  #  and DB_USER is not None
+ #   and DB_HOST is not None
+#)
+#if MYSQL_READY:
+  #  DATABASES = {
+ #       "default": {
+#           "ENGINE": "django.db.backends.mysql",
+#            "NAME": DB_NAME,
+#         "USER": DB_USER,
+#            "PASSWORD": DB_PASSWORD,
+  #          "HOST": DB_HOST,
+ #           "OPTIONS": {
+ #               "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
+#            },
+#        }
+#    }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -155,7 +160,7 @@ USE_TZ = True
 #STATIC_URL = 'static/'
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'static/'
-
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media/'
 
